@@ -25,6 +25,7 @@ type Thumbnails struct {
 	ScreenShot string `json:"screenShot"`
 }
 
+/*
 // Images is struct for links to originals of various images for test tun
 type Images struct {
 	Waterfall      string `json:"waterfall"`
@@ -65,7 +66,7 @@ type Breakdown struct {
 
 	Requests int `json:"requests"`
 }
-
+*/
 // Headers is struct for http headers of request and response
 type Headers struct {
 	Request  []string `json:"request"`
@@ -177,7 +178,7 @@ type jsonRequest struct {
 // With Steps in case of scripted run and without steps, when we test single url
 // Because Go is strictly typed, we have to "merge" them in one data type
 type TestView struct {
-	Run           int        `json:"run"`
+	Run           float64    `json:"run"`
 	Tester        string     `json:"tester"`
 	NumberOfSteps int        `json:"numSteps"`
 	Steps         []TestStep `json:"steps"`
@@ -187,9 +188,9 @@ type TestView struct {
 // nature of test result's json
 func (tv *TestView) UnmarshalJSON(b []byte) error {
 	var tmp struct {
-		Run           int    `json:"run"`
-		Tester        string `json:"tester"`
-		NumberOfSteps int    `json:"numSteps"`
+		Run           float64 `json:"run"`
+		Tester        string  `json:"tester"`
+		NumberOfSteps int     `json:"numSteps"`
 	}
 	if err := json.Unmarshal(b, &tmp); err != nil {
 		return err
@@ -223,12 +224,13 @@ func (tv *TestView) UnmarshalJSON(b []byte) error {
 }
 
 // TestStep is struct with information of one particular test "run"
+/*
 type TestStep struct {
-	URL    string `json:"URL"`
-	Run    int    `json:"run"`
-	Date   int    `json:"date"`   // 1479973600
-	Error  string `json:"error"`  // Timed out waiting for the browser to start.
-	Result int    `json:"result"` // 99999
+	URL    string  `json:"URL"`
+	Run    int     `json:"run"`
+	Date   float64 `json:"date"`   // 1479973600
+	Error  string  `json:"error"`  // Timed out waiting for the browser to start.
+	Result int     `json:"result"` // 99999
 
 	Tester         string `json:"tester"`
 	BrowserName    string `json:"browser_name"`    // "Google Chrome"
@@ -247,8 +249,8 @@ type TestStep struct {
 	// Time to DOM Loading - From Navigation Timing
 	DOMLoading int `json:"domLoading"`
 	// Browser-reported first paint time (IE-specific right now - window.performance.timing.msFirstPaint)
-	FirstPaint           int `json:"firstPaint"`
-	FirstMeaningfulPaint int `json:"chromeUserTiming.firstMeaningfulPaint"`
+	FirstPaint           float64 `json:"firstPaint"`
+	FirstMeaningfulPaint int     `json:"chromeUserTiming.firstMeaningfulPaint"`
 	// Time from the start of the operation until the title first changed (in ms)
 	TitleTime int `json:"titleTime"`
 	// Time to DOM Interactive - From Navigation Timing
@@ -292,8 +294,8 @@ type TestStep struct {
 	CPUTimes    map[string]int `json:"cpuTimes"`
 	CPUTimesDoc map[string]int `json:"cpuTimesDoc"`
 
-	DocCPUpct         int `json:"docCPUpct"`         // 39
-	FullyLoadedCPUpct int `json:"fullyLoadedCPUpct"` // 19,
+	DocCPUpct         int     `json:"docCPUpct"`         // 39
+	FullyLoadedCPUpct float64 `json:"fullyLoadedCPUpct"` // 19,
 
 	// The number of bytes downloaded before the Document Complete time
 	BytesIn         int `json:"bytesIn"`
@@ -369,6 +371,606 @@ type TestStep struct {
 	Domains     map[string]Domain `json:"-"` // may be empty array
 
 	TestTiming map[string]int `json:"testTiming"`
+}
+*/
+
+type TestStep struct {
+	NumSteps                                   int     `json:"numSteps"`
+	Run                                        int     `json:"run"`
+	Tester                                     string  `json:"tester"`
+	MinifyTotal                                int     `json:"minify_total"`
+	Responses200                               int     `json:"responses_200"`
+	TestStartOffset                            int     `json:"testStartOffset"`
+	BytesOut                                   int     `json:"bytesOut"`
+	GzipSavings                                int     `json:"gzip_savings"`
+	RequestsFull                               int     `json:"requestsFull"`
+	StartEpoch                                 int     `json:"start_epoch"`
+	Connections                                int     `json:"connections"`
+	BasePageCdn                                string  `json:"base_page_cdn"`
+	BytesOutDoc                                int     `json:"bytesOutDoc"`
+	Result                                     int     `json:"result"`
+	FinalBasePageRequestID                     string  `json:"final_base_page_request_id"`
+	ScoreCookies                               int     `json:"score_cookies"`
+	BasePageSSLTime                            int     `json:"basePageSSLTime"`
+	DocTime                                    int     `json:"docTime"`
+	DomContentLoadedEventEnd                   int     `json:"domContentLoadedEventEnd"`
+	ImageSavings                               int     `json:"image_savings"`
+	RequestsDoc                                int     `json:"requestsDoc"`
+	FirstMeaningfulPaint                       int     `json:"firstMeaningfulPaint"`
+	FirstTextPaint                             int     `json:"firstTextPaint"`
+	FirstPaint                                 float64 `json:"firstPaint"`
+	ScoreCdn                                   int     `json:"score_cdn"`
+	OptimizationChecked                        int     `json:"optimization_checked"`
+	ImageTotal                                 int     `json:"image_total"`
+	ScoreMinify                                int     `json:"score_minify"`
+	GzipTotal                                  int     `json:"gzip_total"`
+	Responses404                               int     `json:"responses_404"`
+	LoadTime                                   int     `json:"loadTime"`
+	URL                                        string  `json:"URL"`
+	ScoreCombine                               int     `json:"score_combine"`
+	FirstContentfulPaint                       int     `json:"firstContentfulPaint"`
+	FirstLayout                                int     `json:"firstLayout"`
+	ScoreEtags                                 int     `json:"score_etags"`
+	LoadEventStart                             int     `json:"loadEventStart"`
+	MinifySavings                              int     `json:"minify_savings"`
+	ScoreProgressiveJpeg                       int     `json:"score_progressive_jpeg"`
+	DomInteractive                             int     `json:"domInteractive"`
+	ScoreGzip                                  int     `json:"score_gzip"`
+	ScoreCompress                              int     `json:"score_compress"`
+	DomContentLoadedEventStart                 int     `json:"domContentLoadedEventStart"`
+	FinalURL                                   string  `json:"final_url"`
+	BytesInDoc                                 int     `json:"bytesInDoc"`
+	FirstImagePaint                            int     `json:"firstImagePaint"`
+	ScoreKeepAlive                             int     `json:"score_keep-alive"`
+	LoadEventEnd                               int     `json:"loadEventEnd"`
+	Cached                                     int     `json:"cached"`
+	ScoreCache                                 int     `json:"score_cache"`
+	ResponsesOther                             int     `json:"responses_other"`
+	MainFrame                                  string  `json:"main_frame"`
+	FullyLoaded                                int     `json:"fullyLoaded"`
+	Requests                                   int     `json:"requests"`
+	FinalBasePageRequest                       int     `json:"final_base_page_request"`
+	TTFB                                       int     `json:"TTFB"`
+	BytesIn                                    int     `json:"bytesIn"`
+	TestRunTimeMs                              int     `json:"test_run_time_ms"`
+	BrowserVersion                             string  `json:"browser_version"`
+	BasePageDNSServer                          string  `json:"base_page_dns_server"`
+	FullyLoadedCPUms                           int     `json:"fullyLoadedCPUms"`
+	PerformancePaintTimingFirstContentfulPaint float64 `json:"PerformancePaintTiming.first-contentful-paint"`
+	BasePageIPPtr                              string  `json:"base_page_ip_ptr"`
+	EventName                                  string  `json:"eventName"`
+	Detected                                   struct {
+		Widgets              string `json:"Widgets"`
+		Analytics            string `json:"Analytics"`
+		JavaScriptFrameworks string `json:"JavaScript Frameworks"`
+		Miscellaneous        string `json:"Miscellaneous"`
+		WebServers           string `json:"Web Servers"`
+	} `json:"detected"`
+	BasePageCname                    string  `json:"base_page_cname"`
+	DocumentURL                      string  `json:"document_URL"`
+	Date                             float64 `json:"date"`
+	PerformancePaintTimingFirstPaint float64 `json:"PerformancePaintTiming.first-paint"`
+	DomElements                      int     `json:"domElements"`
+	DocumentOrigin                   string  `json:"document_origin"`
+	BrowserName                      string  `json:"browser_name"`
+	DetectedApps                     struct {
+		JQuery          string `json:"jQuery"`
+		MouseFlow       string `json:"Mouse Flow"`
+		SiteCatalyst    string `json:"SiteCatalyst"`
+		UnderscoreJs    string `json:"Underscore.js"`
+		GoogleAnalytics string `json:"Google Analytics"`
+		React           string `json:"React"`
+		Nginx           string `json:"Nginx"`
+		Webpack         string `json:"webpack"`
+		Facebook        string `json:"Facebook"`
+		RequireJS       string `json:"RequireJS"`
+		LoDash          string `json:"Lo-dash"`
+	} `json:"detected_apps"`
+	FullyLoadedCPUpct               float64 `json:"fullyLoadedCPUpct"`
+	DomComplete                     int     `json:"domComplete"`
+	DocumentHostname                string  `json:"document_hostname"`
+	UserTimeMarkAdobeTargetHideBody int     `json:"userTime.mark_adobe_target_hide_body"`
+	UserTimes                       struct {
+		MarkAdobeTargetHideBody        int `json:"mark_adobe_target_hide_body"`
+		MarkAdobeTargetVisitorIDStart1 int `json:"mark_adobe_target_visitor_id_start_1"`
+		MarkAdobeTargetVisitorIDStart2 int `json:"mark_adobe_target_visitor_id_start_2"`
+		MarkAdobeTargetVisitorIDEnd1   int `json:"mark_adobe_target_visitor_id_end_1"`
+		MarkAdobeTargetRequestStart1   int `json:"mark_adobe_target_request_start_1"`
+		MarkAdobeTargetVisitorIDEnd2   int `json:"mark_adobe_target_visitor_id_end_2"`
+		MarkAdobeTargetRequestStart2   int `json:"mark_adobe_target_request_start_2"`
+		MarkAdobeTargetRequestEnd2     int `json:"mark_adobe_target_request_end_2"`
+		MarkAdobeTargetRequestEnd1     int `json:"mark_adobe_target_request_end_1"`
+		MarkAdobeTargetShowBody        int `json:"mark_adobe_target_show_body"`
+	} `json:"userTimes"`
+	UserTimeMarkAdobeTargetVisitorIDStart1                                   int `json:"userTime.mark_adobe_target_visitor_id_start_1"`
+	UserTimeMarkAdobeTargetVisitorIDStart2                                   int `json:"userTime.mark_adobe_target_visitor_id_start_2"`
+	UserTimeMarkAdobeTargetVisitorIDEnd1                                     int `json:"userTime.mark_adobe_target_visitor_id_end_1"`
+	UserTimeMarkAdobeTargetRequestStart1                                     int `json:"userTime.mark_adobe_target_request_start_1"`
+	UserTimeMarkAdobeTargetVisitorIDEnd2                                     int `json:"userTime.mark_adobe_target_visitor_id_end_2"`
+	UserTimeMarkAdobeTargetRequestStart2                                     int `json:"userTime.mark_adobe_target_request_start_2"`
+	UserTimeMarkAdobeTargetRequestEnd2                                       int `json:"userTime.mark_adobe_target_request_end_2"`
+	UserTimeMarkAdobeTargetRequestEnd1                                       int `json:"userTime.mark_adobe_target_request_end_1"`
+	UserTimeMarkAdobeTargetShowBody                                          int `json:"userTime.mark_adobe_target_show_body"`
+	UserTimingMeasureMeasureAdobeTargetVisitorIDRequest1MboxTargetGlobalMbox int `json:"userTimingMeasure.measure_adobe_target_visitor_id_request_1_mbox_target-global-mbox"`
+	UserTimingMeasures                                                       []struct {
+		Name      string  `json:"name"`
+		StartTime float64 `json:"startTime"`
+		Duration  float64 `json:"duration"`
+	} `json:"userTimingMeasures"`
+	UserTimingMeasureMeasureAdobeTargetVisitorIDRequest2MboxDTPosterHome   int      `json:"userTimingMeasure.measure_adobe_target_visitor_id_request_2_mbox_DT_PosterHome"`
+	UserTimingMeasureMeasureAdobeTargetRequestRequest1MboxTargetGlobalMbox int      `json:"userTimingMeasure.measure_adobe_target_request_request_1_mbox_target-global-mbox"`
+	UserTimingMeasureMeasureAdobeTargetRequestRequest2MboxDTPosterHome     int      `json:"userTimingMeasure.measure_adobe_target_request_request_2_mbox_DT_PosterHome"`
+	UserTime                                                               int      `json:"userTime"`
+	Custom                                                                 []string `json:"custom"`
+	ImagesString                                                           string   `json:"Images"`
+	Colordepth                                                             int      `json:"Colordepth"`
+	Resolution                                                             string   `json:"Resolution"`
+	Dpi                                                                    string   `json:"Dpi"`
+	SpeedIndex                                                             int      `json:"SpeedIndex"`
+	VisualComplete85                                                       int      `json:"visualComplete85"`
+	VisualComplete90                                                       int      `json:"visualComplete90"`
+	VisualComplete95                                                       int      `json:"visualComplete95"`
+	VisualComplete99                                                       int      `json:"visualComplete99"`
+	VisualComplete                                                         int      `json:"visualComplete"`
+	Render                                                                 int      `json:"render"`
+	LastVisualChange                                                       int      `json:"lastVisualChange"`
+	ChromeUserTiming                                                       []struct {
+		Name string `json:"name"`
+		Time int    `json:"time"`
+	} `json:"chromeUserTiming"`
+	ChromeUserTimingRedirectStart                 int `json:"chromeUserTiming.redirectStart"`
+	ChromeUserTimingRedirectEnd                   int `json:"chromeUserTiming.redirectEnd"`
+	ChromeUserTimingFetchStart                    int `json:"chromeUserTiming.fetchStart"`
+	ChromeUserTimingResponseEnd                   int `json:"chromeUserTiming.responseEnd"`
+	ChromeUserTimingUnloadEventStart              int `json:"chromeUserTiming.unloadEventStart"`
+	ChromeUserTimingUnloadEventEnd                int `json:"chromeUserTiming.unloadEventEnd"`
+	ChromeUserTimingDomLoading                    int `json:"chromeUserTiming.domLoading"`
+	ChromeUserTimingFirstLayout                   int `json:"chromeUserTiming.firstLayout"`
+	ChromeUserTimingFirstPaint                    int `json:"chromeUserTiming.firstPaint"`
+	ChromeUserTimingFirstMeaningfulPaintCandidate int `json:"chromeUserTiming.firstMeaningfulPaintCandidate"`
+	ChromeUserTimingDomInteractive                int `json:"chromeUserTiming.domInteractive"`
+	ChromeUserTimingDomContentLoadedEventStart    int `json:"chromeUserTiming.domContentLoadedEventStart"`
+	ChromeUserTimingDomContentLoadedEventEnd      int `json:"chromeUserTiming.domContentLoadedEventEnd"`
+	ChromeUserTimingFirstContentfulPaint          int `json:"chromeUserTiming.firstContentfulPaint"`
+	ChromeUserTimingFirstMeaningfulPaint          int `json:"chromeUserTiming.firstMeaningfulPaint"`
+	ChromeUserTimingFirstTextPaint                int `json:"chromeUserTiming.firstTextPaint"`
+	ChromeUserTimingFirstImagePaint               int `json:"chromeUserTiming.firstImagePaint"`
+	ChromeUserTimingDomComplete                   int `json:"chromeUserTiming.domComplete"`
+	ChromeUserTimingLoadEventStart                int `json:"chromeUserTiming.loadEventStart"`
+	ChromeUserTimingLoadEventEnd                  int `json:"chromeUserTiming.loadEventEnd"`
+	BlinkFeatureFirstUsed                         struct {
+		AnimatedCSSFeatures []interface{} `json:"AnimatedCSSFeatures"`
+		CSSFeatures         struct {
+			CSSPropertyPosition                   float64 `json:"CSSPropertyPosition"`
+			CSSPropertyWebkitTapHighlightColor    float64 `json:"CSSPropertyWebkitTapHighlightColor"`
+			CSSPropertyMinHeight                  float64 `json:"CSSPropertyMinHeight"`
+			CSSPropertyTextDecoration             float64 `json:"CSSPropertyTextDecoration"`
+			CSSPropertyBorderRight                float64 `json:"CSSPropertyBorderRight"`
+			CSSPropertyMaxHeight                  float64 `json:"CSSPropertyMaxHeight"`
+			CSSPropertyBorderTop                  float64 `json:"CSSPropertyBorderTop"`
+			CSSPropertySpeak                      float64 `json:"CSSPropertySpeak"`
+			CSSPropertyTransitionDelay            float64 `json:"CSSPropertyTransitionDelay"`
+			CSSPropertyPaddingLeft                float64 `json:"CSSPropertyPaddingLeft"`
+			CSSPropertyPadding                    float64 `json:"CSSPropertyPadding"`
+			CSSPropertyWhiteSpace                 float64 `json:"CSSPropertyWhiteSpace"`
+			CSSPropertyAliasWebkitBoxSizing       float64 `json:"CSSPropertyAliasWebkitBoxSizing"`
+			CSSPropertyListStyle                  float64 `json:"CSSPropertyListStyle"`
+			CSSPropertyVerticalAlign              float64 `json:"CSSPropertyVerticalAlign"`
+			CSSPropertyTransform                  float64 `json:"CSSPropertyTransform"`
+			CSSPropertyFill                       float64 `json:"CSSPropertyFill"`
+			CSSPropertyMinWidth                   float64 `json:"CSSPropertyMinWidth"`
+			CSSPropertyTransition                 float64 `json:"CSSPropertyTransition"`
+			CSSPropertyAliasWebkitTransformOrigin float64 `json:"CSSPropertyAliasWebkitTransformOrigin"`
+			CSSPropertyBorderStyle                float64 `json:"CSSPropertyBorderStyle"`
+			CSSPropertyFlexFlow                   float64 `json:"CSSPropertyFlexFlow"`
+			CSSPropertyFontFamily                 float64 `json:"CSSPropertyFontFamily"`
+			CSSPropertyCursor                     float64 `json:"CSSPropertyCursor"`
+			CSSPropertyHeight                     float64 `json:"CSSPropertyHeight"`
+			CSSPropertyFlexBasis                  float64 `json:"CSSPropertyFlexBasis"`
+			CSSPropertyFontStyle                  float64 `json:"CSSPropertyFontStyle"`
+			CSSPropertyBorderImageSource          float64 `json:"CSSPropertyBorderImageSource"`
+			CSSPropertyFontVariant                float64 `json:"CSSPropertyFontVariant"`
+			CSSPropertyBoxSizing                  float64 `json:"CSSPropertyBoxSizing"`
+			CSSPropertyTextOverflow               float64 `json:"CSSPropertyTextOverflow"`
+			CSSPropertyBorderColor                float64 `json:"CSSPropertyBorderColor"`
+			CSSPropertyPaddingBottom              float64 `json:"CSSPropertyPaddingBottom"`
+			CSSPropertyLeft                       float64 `json:"CSSPropertyLeft"`
+			CSSPropertyContent                    float64 `json:"CSSPropertyContent"`
+			CSSPropertyFilter                     float64 `json:"CSSPropertyFilter"`
+			CSSPropertyWidth                      float64 `json:"CSSPropertyWidth"`
+			CSSPropertyBorderImageSlice           float64 `json:"CSSPropertyBorderImageSlice"`
+			CSSPropertyBorder                     float64 `json:"CSSPropertyBorder"`
+			CSSPropertyTouchAction                float64 `json:"CSSPropertyTouchAction"`
+			CSSPropertyFlex                       float64 `json:"CSSPropertyFlex"`
+			CSSPropertyBackgroundColor            float64 `json:"CSSPropertyBackgroundColor"`
+			CSSPropertyPaddingTop                 float64 `json:"CSSPropertyPaddingTop"`
+			CSSPropertyBottom                     float64 `json:"CSSPropertyBottom"`
+			CSSPropertyBorderCollapse             float64 `json:"CSSPropertyBorderCollapse"`
+			CSSPropertyMargin                     float64 `json:"CSSPropertyMargin"`
+			CSSPropertyTop                        float64 `json:"CSSPropertyTop"`
+			CSSPropertyMarginBottom               float64 `json:"CSSPropertyMarginBottom"`
+			CSSPropertyBorderSpacing              float64 `json:"CSSPropertyBorderSpacing"`
+			CSSPropertyFloat                      float64 `json:"CSSPropertyFloat"`
+			CSSPropertyDisplay                    float64 `json:"CSSPropertyDisplay"`
+			CSSPropertyTransformOrigin            float64 `json:"CSSPropertyTransformOrigin"`
+			CSSPropertyAliasWebkitUserSelect      float64 `json:"CSSPropertyAliasWebkitUserSelect"`
+			CSSPropertyMarginTop                  float64 `json:"CSSPropertyMarginTop"`
+			CSSPropertyBorderLeft                 float64 `json:"CSSPropertyBorderLeft"`
+			CSSPropertyJustifyContent             float64 `json:"CSSPropertyJustifyContent"`
+			CSSPropertyBoxShadow                  float64 `json:"CSSPropertyBoxShadow"`
+			CSSPropertyMaxWidth                   float64 `json:"CSSPropertyMaxWidth"`
+			CSSPropertyTextIndent                 float64 `json:"CSSPropertyTextIndent"`
+			CSSPropertyObjectFit                  float64 `json:"CSSPropertyObjectFit"`
+			CSSPropertyZIndex                     float64 `json:"CSSPropertyZIndex"`
+			CSSPropertyBorderImageWidth           float64 `json:"CSSPropertyBorderImageWidth"`
+			CSSPropertyPaddingRight               float64 `json:"CSSPropertyPaddingRight"`
+			CSSPropertyFlexGrow                   float64 `json:"CSSPropertyFlexGrow"`
+			CSSPropertyWebkitAppearance           float64 `json:"CSSPropertyWebkitAppearance"`
+			CSSPropertyBorderRadius               float64 `json:"CSSPropertyBorderRadius"`
+			CSSPropertyFlexDirection              float64 `json:"CSSPropertyFlexDirection"`
+			CSSPropertyBorderImageRepeat          float64 `json:"CSSPropertyBorderImageRepeat"`
+			CSSPropertyOutline                    float64 `json:"CSSPropertyOutline"`
+			CSSPropertyListStyleType              float64 `json:"CSSPropertyListStyleType"`
+			CSSPropertyOverflow                   float64 `json:"CSSPropertyOverflow"`
+			CSSPropertyFontWeight                 float64 `json:"CSSPropertyFontWeight"`
+			CSSPropertyOverflowX                  float64 `json:"CSSPropertyOverflowX"`
+			CSSPropertyOverflowY                  float64 `json:"CSSPropertyOverflowY"`
+			CSSPropertyTextAlign                  float64 `json:"CSSPropertyTextAlign"`
+			CSSPropertyMarginRight                float64 `json:"CSSPropertyMarginRight"`
+			CSSPropertyWebkitFontSmoothing        float64 `json:"CSSPropertyWebkitFontSmoothing"`
+			CSSPropertyAlignItems                 float64 `json:"CSSPropertyAlignItems"`
+			CSSPropertyBackground                 float64 `json:"CSSPropertyBackground"`
+			CSSPropertyAliasWebkitFilter          float64 `json:"CSSPropertyAliasWebkitFilter"`
+			CSSPropertyLetterSpacing              float64 `json:"CSSPropertyLetterSpacing"`
+			CSSPropertyAliasWebkitTextSizeAdjust  float64 `json:"CSSPropertyAliasWebkitTextSizeAdjust"`
+			CSSPropertyUserSelect                 float64 `json:"CSSPropertyUserSelect"`
+			CSSPropertyLineHeight                 float64 `json:"CSSPropertyLineHeight"`
+			CSSPropertyFont                       float64 `json:"CSSPropertyFont"`
+			CSSPropertyOpacity                    float64 `json:"CSSPropertyOpacity"`
+			CSSPropertyTextTransform              float64 `json:"CSSPropertyTextTransform"`
+			CSSPropertyRight                      float64 `json:"CSSPropertyRight"`
+			CSSPropertyFontSize                   float64 `json:"CSSPropertyFontSize"`
+			CSSPropertyOrder                      float64 `json:"CSSPropertyOrder"`
+			CSSPropertyClear                      float64 `json:"CSSPropertyClear"`
+			CSSPropertyAliasWebkitTransform       float64 `json:"CSSPropertyAliasWebkitTransform"`
+			CSSPropertyBorderWidth                float64 `json:"CSSPropertyBorderWidth"`
+			CSSPropertyVisibility                 float64 `json:"CSSPropertyVisibility"`
+			CSSPropertyClip                       float64 `json:"CSSPropertyClip"`
+			CSSPropertyBorderBottom               float64 `json:"CSSPropertyBorderBottom"`
+			CSSPropertyColor                      float64 `json:"CSSPropertyColor"`
+			CSSPropertyMarginLeft                 float64 `json:"CSSPropertyMarginLeft"`
+		} `json:"CSSFeatures"`
+		Features struct {
+			XMLHTTPRequestAsynchronous                                float64 `json:"XMLHttpRequestAsynchronous"`
+			PlaceholderAttribute                                      float64 `json:"PlaceholderAttribute"`
+			PrefixedMutationObserverConstructor                       float64 `json:"PrefixedMutationObserverConstructor"`
+			XSSAuditorDisabled                                        float64 `json:"XSSAuditorDisabled"`
+			XMLHTTPRequestCrossOriginWithCredentials                  float64 `json:"XMLHttpRequestCrossOriginWithCredentials"`
+			V8PerformanceNavigationAttributeGetter                    float64 `json:"V8Performance_Navigation_AttributeGetter"`
+			ContentSecurityPolicy                                     float64 `json:"ContentSecurityPolicy"`
+			LangAttribute                                             float64 `json:"LangAttribute"`
+			NavigatorVendor                                           float64 `json:"NavigatorVendor"`
+			XMLDocument                                               float64 `json:"XMLDocument"`
+			SameOriginApplicationScript                               float64 `json:"SameOriginApplicationScript"`
+			NavigatorProductSub                                       float64 `json:"NavigatorProductSub"`
+			CSSFlexibleBox                                            float64 `json:"CSSFlexibleBox"`
+			SecureContextCheckPassed                                  float64 `json:"SecureContextCheckPassed"`
+			V8LegacyDateParser                                        float64 `json:"V8LegacyDateParser"`
+			CSSValueAppearanceNone                                    float64 `json:"CSSValueAppearanceNone"`
+			CSSSelectorWebkitFileUploadButton                         float64 `json:"CSSSelectorWebkitFileUploadButton"`
+			CrossOriginPropertyAccess                                 float64 `json:"CrossOriginPropertyAccess"`
+			V8PerformanceTimingAttributeGetter                        float64 `json:"V8Performance_Timing_AttributeGetter"`
+			CSSSelectorWebkitInnerSpinButton                          float64 `json:"CSSSelectorWebkitInnerSpinButton"`
+			CSSAtRuleKeyframes                                        float64 `json:"CSSAtRuleKeyframes"`
+			DocumentUnloadRegistered                                  float64 `json:"DocumentUnloadRegistered"`
+			SandboxViaIFrame                                          float64 `json:"SandboxViaIFrame"`
+			V8MessageChannelConstructor                               float64 `json:"V8MessageChannel_Constructor"`
+			CrossOriginTextScript                                     float64 `json:"CrossOriginTextScript"`
+			Picture                                                   float64 `json:"Picture"`
+			HasIDClassTagAttribute                                    float64 `json:"HasIDClassTagAttribute"`
+			CrossOriginApplicationScript                              float64 `json:"CrossOriginApplicationScript"`
+			CSSSelectorWebkitInputPlaceholder                         float64 `json:"CSSSelectorWebkitInputPlaceholder"`
+			ScrollToFragmentRequested                                 float64 `json:"ScrollToFragmentRequested"`
+			SecureContextCheckForSandboxedOriginPassed                float64 `json:"SecureContextCheckForSandboxedOriginPassed"`
+			V8CustomEventInitCustomEventMethod                        float64 `json:"V8CustomEvent_InitCustomEvent_Method"`
+			UnprefixedUserTiming                                      float64 `json:"UnprefixedUserTiming"`
+			SuppressHistoryEntryWithoutUserGesture                    float64 `json:"SuppressHistoryEntryWithoutUserGesture"`
+			CrossOriginMainFrameNulledNameAccessed                    float64 `json:"CrossOriginMainFrameNulledNameAccessed"`
+			V8ScreenAvailTopAttributeGetter                           float64 `json:"V8Screen_AvailTop_AttributeGetter"`
+			V8ElementGetClientRectsMethod                             float64 `json:"V8Element_GetClientRects_Method"`
+			UnprefixedRequestAnimationFrame                           float64 `json:"UnprefixedRequestAnimationFrame"`
+			ScrollToFragmentFailWithASCII                             float64 `json:"ScrollToFragmentFailWithASCII"`
+			SVGSVGElementInXMLDocument                                float64 `json:"SVGSVGElementInXMLDocument"`
+			CSSSelectorWebkitSearchCancelButton                       float64 `json:"CSSSelectorWebkitSearchCancelButton"`
+			FormsSubmitted                                            float64 `json:"FormsSubmitted"`
+			CSPWithUnsafeEval                                         float64 `json:"CSPWithUnsafeEval"`
+			PendingStylesheetAddedAfterBodyStarted                    float64 `json:"PendingStylesheetAddedAfterBodyStarted"`
+			HTMLElementInnerText                                      float64 `json:"HTMLElementInnerText"`
+			CookieSet                                                 float64 `json:"CookieSet"`
+			FontShapingNotDefGlyphObserved                            float64 `json:"FontShapingNotDefGlyphObserved"`
+			WindowPostMessage                                         float64 `json:"WindowPostMessage"`
+			FormElement                                               float64 `json:"FormElement"`
+			CSSValueAppearanceButton                                  float64 `json:"CSSValueAppearanceButton"`
+			V8DeoptimizerDisableSpeculation                           float64 `json:"V8DeoptimizerDisableSpeculation"`
+			UnprefixedPerformanceTimeline                             float64 `json:"UnprefixedPerformanceTimeline"`
+			DocumentAll                                               float64 `json:"DocumentAll"`
+			DocumentBeforeUnloadRegistered                            float64 `json:"DocumentBeforeUnloadRegistered"`
+			CSSFilterGrayscale                                        float64 `json:"CSSFilterGrayscale"`
+			V8ScreenAvailLeftAttributeGetter                          float64 `json:"V8Screen_AvailLeft_AttributeGetter"`
+			HasBeforeOrAfterPseudoElement                             float64 `json:"HasBeforeOrAfterPseudoElement"`
+			DuplicatedAttribute                                       float64 `json:"DuplicatedAttribute"`
+			CrossOriginTextHTML                                       float64 `json:"CrossOriginTextHtml"`
+			CSSSelectorPseudoFocus                                    float64 `json:"CSSSelectorPseudoFocus"`
+			HTMLSlotElement                                           float64 `json:"HTMLSlotElement"`
+			MultipleOriginsInTimingAllowOrigin                        float64 `json:"MultipleOriginsInTimingAllowOrigin"`
+			CertificateTransparencyNonCompliantSubresourceInMainFrame float64 `json:"CertificateTransparencyNonCompliantSubresourceInMainFrame"`
+			CertificateTransparencyNonCompliantResourceInSubframe     float64 `json:"CertificateTransparencyNonCompliantResourceInSubframe"`
+			V8StrictMode                                              float64 `json:"V8StrictMode"`
+			CSSAtRuleWebkitKeyframes                                  float64 `json:"CSSAtRuleWebkitKeyframes"`
+			AddEventListenerThirdArgumentIsObject                     float64 `json:"AddEventListenerThirdArgumentIsObject"`
+			CryptoGetRandomValues                                     float64 `json:"CryptoGetRandomValues"`
+			CSSAtRuleFontFace                                         float64 `json:"CSSAtRuleFontFace"`
+			V8ElementGetBoundingClientRectMethod                      float64 `json:"V8Element_GetBoundingClientRect_Method"`
+			V8EventInitEventMethod                                    float64 `json:"V8Event_InitEvent_Method"`
+			PrefixedPageVisibility                                    float64 `json:"PrefixedPageVisibility"`
+			SVGSVGElementInDocument                                   float64 `json:"SVGSVGElementInDocument"`
+			SecureContextCheckFailed                                  float64 `json:"SecureContextCheckFailed"`
+			SVGSVGElement                                             float64 `json:"SVGSVGElement"`
+			CSSGradient                                               float64 `json:"CSSGradient"`
+			LangAttributeOnHTML                                       float64 `json:"LangAttributeOnHTML"`
+			CSSAtRuleMedia                                            float64 `json:"CSSAtRuleMedia"`
+			InputTypeText                                             float64 `json:"InputTypeText"`
+			CSSSelectorWebkitUnknownPseudo                            float64 `json:"CSSSelectorWebkitUnknownPseudo"`
+			StarInTimingAllowOrigin                                   float64 `json:"StarInTimingAllowOrigin"`
+			CleanScriptElementWithNonce                               float64 `json:"CleanScriptElementWithNonce"`
+			SecureContextCheckForSandboxedOriginFailed                float64 `json:"SecureContextCheckForSandboxedOriginFailed"`
+			V8SloppyMode                                              int     `json:"V8SloppyMode"`
+			CookieGet                                                 float64 `json:"CookieGet"`
+		} `json:"Features"`
+	} `json:"blinkFeatureFirstUsed"`
+	Step            int `json:"step"`
+	EffectiveBps    int `json:"effectiveBps"`
+	EffectiveBpsDoc int `json:"effectiveBpsDoc"`
+	DomTime         int `json:"domTime"`
+	Aft             int `json:"aft"`
+	TitleTime       int `json:"titleTime"`
+	DomLoading      int `json:"domLoading"`
+	ServerRtt       int `json:"server_rtt"`
+	SmallImageCount int `json:"smallImageCount"`
+	BigImageCount   int `json:"bigImageCount"`
+	MaybeCaptcha    int `json:"maybeCaptcha"`
+	Pages           struct {
+		Details    string `json:"details"`
+		Checklist  string `json:"checklist"`
+		Breakdown  string `json:"breakdown"`
+		Domains    string `json:"domains"`
+		ScreenShot string `json:"screenShot"`
+	} `json:"pages"`
+	Thumbnails struct {
+		Waterfall  string `json:"waterfall"`
+		Checklist  string `json:"checklist"`
+		ScreenShot string `json:"screenShot"`
+	} `json:"thumbnails"`
+	Images struct {
+		Waterfall      string `json:"waterfall"`
+		ConnectionView string `json:"connectionView"`
+		Checklist      string `json:"checklist"`
+		ScreenShot     string `json:"screenShot"`
+	} `json:"images"`
+	RawData struct {
+		Headers      string `json:"headers"`
+		PageData     string `json:"pageData"`
+		RequestsData string `json:"requestsData"`
+		Utilization  string `json:"utilization"`
+		Trace        string `json:"trace"`
+	} `json:"rawData"`
+	Domains struct {
+		DertourDe struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"dertour.de"`
+		MetricsDertourDe struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"metrics.dertour.de"`
+		WwwDertourDe struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"www.dertour.de"`
+		WwwDwin1Com struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"www.dwin1.com"`
+		T2SymcbCom struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"t2.symcb.com"`
+		FontsGstaticCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"fonts.gstatic.com"`
+		SBtstaticCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"s.btstatic.com"`
+		TiSymcdCom struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"ti.symcd.com"`
+		WwwGoogleCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"www.google.com"`
+		SThebrighttagCom struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"s.thebrighttag.com"`
+		DBtttagCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"d.btttag.com"`
+		DertourBtttagCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"dertour.btttag.com"`
+		BatBingCom struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"bat.bing.com"`
+		WwwFacebookCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"www.facebook.com"`
+		AssetsAdobedtmCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"assets.adobedtm.com"`
+		WwwGoogleAnalyticsCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"www.google-analytics.com"`
+		WwwGoogleadservicesCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"www.googleadservices.com"`
+		AjaxGoogleapisCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"ajax.googleapis.com"`
+		O2MouseflowCom struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"o2.mouseflow.com"`
+		CdnMouseflowCom struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"cdn.mouseflow.com"`
+		DertouristikonlinegmTtOmtrdcNet struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"dertouristikonlinegm.tt.omtrdc.net"`
+		CmEveresttechNet struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"cm.everesttech.net"`
+		GoogleadsGDoubleclickNet struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"googleads.g.doubleclick.net"`
+		StatsGDoubleclickNet struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"stats.g.doubleclick.net"`
+		ConnectFacebookNet struct {
+			Bytes       int    `json:"bytes"`
+			Requests    int    `json:"requests"`
+			CdnProvider string `json:"cdn_provider"`
+			Connections int    `json:"connections"`
+		} `json:"connect.facebook.net"`
+		TrackAdformNet struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"track.adform.net"`
+		DertouristikDemdexNet struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"dertouristik.demdex.net"`
+		DpmDemdexNet struct {
+			Bytes       int `json:"bytes"`
+			Requests    int `json:"requests"`
+			Connections int `json:"connections"`
+		} `json:"dpm.demdex.net"`
+	} `json:"domains"`
+	Breakdown struct {
+		HTML struct {
+			Color             []int `json:"color"`
+			Bytes             int   `json:"bytes"`
+			BytesUncompressed int   `json:"bytesUncompressed"`
+			Requests          int   `json:"requests"`
+		} `json:"html"`
+		Js struct {
+			Color             []int `json:"color"`
+			Bytes             int   `json:"bytes"`
+			BytesUncompressed int   `json:"bytesUncompressed"`
+			Requests          int   `json:"requests"`
+		} `json:"js"`
+		CSS struct {
+			Color             []int `json:"color"`
+			Bytes             int   `json:"bytes"`
+			BytesUncompressed int   `json:"bytesUncompressed"`
+			Requests          int   `json:"requests"`
+		} `json:"css"`
+		Image struct {
+			Color             []int `json:"color"`
+			Bytes             int   `json:"bytes"`
+			BytesUncompressed int   `json:"bytesUncompressed"`
+			Requests          int   `json:"requests"`
+		} `json:"image"`
+		Flash struct {
+			Color             []int `json:"color"`
+			Bytes             int   `json:"bytes"`
+			BytesUncompressed int   `json:"bytesUncompressed"`
+			Requests          int   `json:"requests"`
+		} `json:"flash"`
+		Font struct {
+			Color             []int `json:"color"`
+			Bytes             int   `json:"bytes"`
+			BytesUncompressed int   `json:"bytesUncompressed"`
+			Requests          int   `json:"requests"`
+		} `json:"font"`
+		Video struct {
+			Color             []int `json:"color"`
+			Bytes             int   `json:"bytes"`
+			BytesUncompressed int   `json:"bytesUncompressed"`
+			Requests          int   `json:"requests"`
+		} `json:"video"`
+		Other struct {
+			Color             []int `json:"color"`
+			Bytes             int   `json:"bytes"`
+			BytesUncompressed int   `json:"bytesUncompressed"`
+			Requests          int   `json:"requests"`
+		} `json:"other"`
+	} `json:"breakdown"`
 }
 
 type TestRun struct {

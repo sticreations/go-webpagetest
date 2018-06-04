@@ -126,6 +126,7 @@ type StatusCallback func(testID, status string, duration int)
 // to complete. While it wait, it will poll status updates from server and will call StatusCallback with it
 func (w *WebPageTest) RunTestAndWait(settings TestSettings, callback StatusCallback) (*ResultData, error) {
 	testID, err := w.RunTest(settings)
+
 	if err != nil {
 		return nil, err
 	}
